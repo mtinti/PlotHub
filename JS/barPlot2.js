@@ -46,13 +46,25 @@ function createBarPlot(svgID, data, controlName, treatmentName) {
             return 'translate(' + i * 120 + ',' + (height + 50) + ')';  // Adjust the position here
         });
 
-    // Draw legend colored circles
     legend.append('circle')
-        .attr('class', 'legendCircle')  // Assign a class to the legend circles
+        .attr('class', d => `${d}`)  // Assign a class based on control or treatment name
         .attr('cx', 0)
         .attr('cy', 9)  // Adjust the vertical position to center the circle
         .attr('r', 9)  // The radius of the circle
-        .style('fill', function(d) { return color(d); });
+        .style('fill', function(d) { return color(d); })
+        .on("mouseover", function(event, d) {
+            svg.selectAll(`rect:not(.${d})`)
+                .transition()
+                .duration(200)
+                .style("opacity", 0.3);
+        })
+        .on("mouseout", function(event, d) {
+            svg.selectAll("rect")
+                .transition()
+                .duration(200)
+                .style("opacity", 1);
+        });
+        
 
     // Draw legend text
     // Draw legend text
@@ -103,6 +115,7 @@ function createBarPlot(svgID, data, controlName, treatmentName) {
             .append("rect")
             .attr("y", d => y(d.name))
             .attr("height", y.bandwidth())
+            .attr("class", d => d.name.startsWith(controlName) ? controlName : treatmentName) // add this line
             .merge(bars)  // Merging the new nodes with the existing ones
             .transition().duration(1000)
                 .attr("width", d => x(d.value))
