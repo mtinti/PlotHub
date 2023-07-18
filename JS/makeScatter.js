@@ -67,7 +67,9 @@ function drag_this(selector_id, container_id) {
   
   }
 
+  
 function createScatterPlot(data, xColumn, yColumn, chartElementId, onBrushEnd) {
+
   return new Promise((resolve) => {
     const margin = {top: 20, right: 20, bottom: 30, left: 40};
     const width = 960 - margin.left - margin.right;

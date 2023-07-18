@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <link href="https://cdn.datatables.net/v/dt/dt-1.13.5/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/cr-1.7.0/datatables.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/huebee@2/dist/huebee.min.css">
+    <title>Data Visualisation App</title>
+</head>
+<body>
+    <p style="text-align: center; color: red; font-weight: bold;">
+        For the best experience, please use Firefox or Chrome.
+    </p>
+
+    <div id="loadingSpinner" class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid d-flex justify-content-between">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    Upload File
+                </button>
+                <ul class="dropdown-menu" style="width: 300px;" aria-labelledby="dropdownMenuButton">
+                    <li>
+                        <form class="px-4 py-3">
+
+                            <div class="mb-3">
+                                <label for="csvFile" class="form-label">Upload CSV File</label>
+                                <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <a class="navbar-brand m-auto" href="#">Data Visualisation App</a>
+        </div>
+    </nav>
+
+
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4" id="card-volano-plot">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Volcano Plot</h5>
+                        <button id="download-scatter1" class="btn btn-primary">Downlad Plot</button>
+                    </div>
+                    <div class="card-body">
+                        <svg id="scatterplot1"></svg>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-6">
+                <div class="card mb-4" id='card-ma-plot'>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" >MA Polt</h5>
+                        <button id="download-scatter2" class="btn btn-primary">Downlad Plot</button>
+                    </div>
+                    <div class="card-body">
+                        <svg id="scatterplot2"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4" id='card-table'>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" >Table</h5>
+                        <button id="search-visible" class="btn btn-primary">Highlight Proteins</button>
+                        <input id="colorpicker_value_table" type="text" class="color-input" value="orange" />
+                        <button id="reset-button" class="btn btn-primary">Reset Table</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                        <table id="table_id" class="display">
+    
+                        </table>
+                    </div>
+    
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-6">
+                <div class="card mb-4" id='card-barplot'>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Bar Plot</h5>
+                        <button id="download-bar" class="btn btn-primary">Download Plot</button>
+
+                    </div>
+                    <div class="card-body">
+                        <svg id="barPlotID"></svg>
+                    </div>
+                </div>
+                <!-- New Card -->
+                <div class="card mb-4" id='card-protein-selection'>
+                    <div class="card-header text-center">
+                        <h5>Protein Selection</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- Color Selection -->
+                                <div id="colorpicker_div">
+                                    Select Color for selection
+                                    <input id="colorpicker_value" type="text" class="color-input" value="orange" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <!-- Form -->
+                                <form id="myForm">
+                                    <div class="form-group">
+                                        <textarea class="form-control mb-3" id="textAreaIDs" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                    <button type="reset" class="btn btn-secondary btn-sm">Reset</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+
+        </div>
+    </div>
+    
+
+    <!-- Include d3.js and your custom JS files here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="JS/d3js.org_d3.v6.min.js"></script>
+    <script src="https://unpkg.com/huebee@2/dist/huebee.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.5/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/cr-1.7.0/datatables.min.js"></script>
+    <script src="JS/makeTable.js"></script> 
+    <script src="JS/makeScatter.js"></script> 
+    <script src="JS/interactivity.js"></script>
+    <script src="JS/barPlot2.js"></script>
+    <script src="JS/loadData.js"></script>
+    <script src="JS/pdfkit.standalone.js"></script> 
+    
+    <script>
+    // use selector string to initialize on single element
+    var huebs = document.querySelectorAll('.color-input').forEach(function(el) {
+    new Huebee( el, {
+        // options
+        setBGColor: true,
+        saturations: 1,
+    });
+    });
+
+
+    </script>
+
+    <style>
+
+    .dataTables_wrapper {
+    font-size: 12px;
+    }
+
+    .card-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+  
+    svg {
+        margin: auto;
+    }
+
+    .tooltip {
+        position: absolute;
+        background-color: white;
+        padding: 5px;
+        border: 1px solid black;
+        border-radius: 5px;
+        pointer-events: none;  /* To let mouse events pass through the tooltip */
+    }
+
+    .tooltip table {
+    border-collapse: collapse;
+    text-align: left;
+    }
+
+    .tooltip td {
+    padding: 5px;
+    border: 1px solid black;
+    }
+
+    .highlight {
+        background-color: red;
+    }
+
+ 
+    .bb-axis.bb-axis-x .domain {
+    stroke-width: 2px !important;
+    }
+
+    .bb-axis.bb-axis-x .tick text {
+        font-size: 12px !important;
+    }
+    .bb-axis.bb-axis-y .tick text {
+        font-size: 12px !important;
+    }
+
+
+.spinner-overlay {
+  display: none;  /* Initially hidden */
+  position: fixed;  /* Covers entire screen */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);  /* Semi-opaque black */
+  z-index: 9999;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -15px 0 0 -15px;  /* Center the spinner */
+  width: 30px;
+  height: 30px;
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+</style>
+      
+<script>
+
+function enableSvgDownload(buttonId, svgId, filename) {
+    document.getElementById(buttonId).addEventListener("click", function(){
+        var fileType = prompt("Please enter the file type you want to download (svg or png):", "svg");
+
+        if (fileType !== 'svg' && fileType !== 'png') {
+            alert('Invalid file type. Please try again and enter either "svg" or "png".');
+            return;
+        }
+
+        var svg = document.querySelector("#" + svgId);
+        var downloadLink = document.createElement("a");
+        downloadLink.download = filename + '.' + fileType;
+        
+        if (fileType === 'svg') {
+            // SVG download
+            var svgData = new Blob([svg.outerHTML], {type: "image/svg+xml;charset=utf-8"});
+            downloadLink.href = window.URL.createObjectURL(svgData);
+        } else if (fileType === 'png') {
+            // PNG download
+            var svgData = new XMLSerializer().serializeToString(svg);
+            
+            // Make sure the SVG does not have a background color
+            svgData = svgData.replace(/(background(-color)?:[^;]*;?)/g, '');
+            
+            var canvas = document.createElement("canvas");
+            var svgSize = svg.getBoundingClientRect();
+            canvas.width = svgSize.width;
+            canvas.height = svgSize.height;
+            var ctx = canvas.getContext("2d");
+            var img = document.createElement("img");
+            img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData))));
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0);
+                var imgsrc = canvas.toDataURL("image/png");
+                downloadLink.href = imgsrc;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            };
+            return;
+        }
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    });
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+enableSvgDownload("download-bar", "barPlotID", "BarPlot.svg");
+enableSvgDownload("download-scatter1", "scatterplot1", "VolcanoPlot.svg");
+enableSvgDownload("download-scatter2", "scatterplot2", "MA.svg");
+});
+
+
+
+</script>
+
+</body>
+
+</html>
