@@ -99,7 +99,7 @@ function createBarPlot(svgID, data, controlName, treatmentName) {
     // Update function
     function update(data) {
 
-        console.log('data in update bar', data);
+        //console.log('data in update bar', data);
         x.domain([0, d3.max(data, d => d.value)]);
         y.domain(data.map(d => d.name));
         color.domain(data.map(d => d.name.startsWith(controlName) ? controlName : treatmentName));  // Define the domain for the color scale

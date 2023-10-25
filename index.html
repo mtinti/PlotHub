@@ -19,13 +19,20 @@
     <div id="loadingSpinner" class="spinner-overlay">
         <div class="spinner"></div>
     </div>
+
+    <div class="container-fluid d-flex justify-content-center">
+        <h2 class="font-weight-bold">PlotHub: Navigating Differential Expressions</h2>
+    </div>
+
     <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid d-flex justify-content-between">
+        <div class="container-fluid d-flex">
             <div class="dropdown">
+
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     Upload File
                 </button>
+
                 <ul class="dropdown-menu" style="width: 300px;" aria-labelledby="dropdownMenuButton">
                     <li>
                         <form class="px-4 py-3">
@@ -34,12 +41,22 @@
                                 <label for="csvFile" class="form-label">Upload CSV File</label>
                                 <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv">
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <button type="submit" class="btn btn-primary" id="processUserFile" >Submit</button>
+
+                            
+
+
                         </form>
                     </li>
                 </ul>
+
             </div>
-            <a class="navbar-brand m-auto" href="#">Data Visualisation App</a>
+            
+            <div class="container-fluid d-flex">
+            <button class="btn btn-secondary" id="uploadTestFile" class="btn btn-secondary">Upload Test File</button>
+            </div>
+            
         </div>
     </nav>
 
@@ -76,8 +93,8 @@
             <div class="col-md-6">
                 <div class="card mb-4" id='card-table'>
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0" >Table</h5>
-                        <button id="search-visible" class="btn btn-primary">Highlight Proteins</button>
+                        <h5 class="mb-0" >Data Table</h5>
+                        <button id="search-visible" class="btn btn-primary">Highlight Rows</button>
                         <input id="colorpicker_value_table" type="text" class="color-input" value="orange" />
                         <button id="reset-button" class="btn btn-primary">Reset Table</button>
                     </div>
@@ -95,7 +112,7 @@
             <div class="col-md-6">
                 <div class="card mb-4" id='card-barplot'>
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Bar Plot</h5>
+                        <h5 class="mb-0">Intensity Bar Plot</h5>
                         <button id="download-bar" class="btn btn-primary">Download Plot</button>
 
                     </div>
@@ -105,8 +122,8 @@
                 </div>
                 <!-- New Card -->
                 <div class="card mb-4" id='card-protein-selection'>
-                    <div class="card-header text-center">
-                        <h5>Protein Selection</h5>
+                    <div class="card-header text-center" id='bar-plot-card-header'>
+                        <h5>Highlighting Data Points</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -137,7 +154,8 @@
         </div>
     </div>
     
-
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
     <!-- Include d3.js and your custom JS files here -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="JS/d3js.org_d3.v6.min.js"></script>
@@ -161,6 +179,27 @@
     });
     });
 
+    tippy('#download-scatter1', {
+    content: 'Click to download the Volcano Plot as SVG or PNG file',
+    });
+
+    tippy('#download-scatter2', {
+        content: 'Click to download the MA Plot as SVG or PNG file',
+    });
+
+    tippy('#download-bar', {
+        content: 'Click to download the Intensity Bar Plot as SVG or PNG file',
+    });
+
+    tippy('#search-visible', {
+    content: 'Click to highlight on the Volcano and MA plots the data points visible in the table', });
+
+    tippy('#bar-plot-card-header', {
+    content: 'Copy/Paste in this text form the ids to visualize in the table and in the Volcano and MA plot', });
+
+    tippy('.color-input', {
+    content: 'Select the color for the selection', });    
+    
 
     </script>
 

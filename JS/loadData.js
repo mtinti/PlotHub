@@ -1,6 +1,15 @@
 
   async function processFile(data, controlName, treatmentName) {
 
+    //d3.select("#scatterplot1").selectAll("*").remove();
+    //d3.select("#scatterplot2").selectAll("*").remove();
+    //d3.select("#barPlotID").selectAll("*").remove();
+    //if ($.fn.dataTable.isDataTable('#table_id')) {
+    //  $('#table_id').DataTable().destroy();
+    //}
+
+ 
+
     console.log('controlName, treatmentName inside processFile', controlName, treatmentName);
     
     //here we capture the circle ids at the end of brush
@@ -74,7 +83,7 @@
 
     // Return the array of unique condition names
     return conditionNames;
-}
+  } 
 
 
   
@@ -89,20 +98,18 @@
         return;
     }
 
+    // Disable the submit button and display the message
+    var submitButton = document.querySelector('.dropdown-menu form button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.innerText = "File uploaded. Please refresh the page to upload another file.";
+
+    var submitButton = document.querySelector('#uploadTestFile');
+    submitButton.disabled = true;
+    submitButton.innerText = "File uploaded. Please refresh the page to upload another file.";
+
     var reader = new FileReader();
 
-    // Get control name and treatment name from form inputs
-    //var controlName = document.getElementById('controlName').value;
-    //var treatmentName = document.getElementById('treatmentName').value;
 
-
-    // Provide default names if inputs are empty
-    //if (!controlName) {
-    //    controlName = 'Control';
-    //}
-    //if (!treatmentName) {
-    //    treatmentName = 'Treatment';
-    //}
 
     document.getElementById('loadingSpinner').style.display = 'block';
     
@@ -121,4 +128,44 @@
     })(file);
    
     reader.readAsText(file);
+
 });
+
+
+
+document.getElementById('uploadTestFile').addEventListener('click', function() {
+  // Show loading spinner
+  document.getElementById('loadingSpinner').style.display = 'block';
+
+  var submitButton = document.querySelector('#uploadTestFile');
+  submitButton.disabled = true;
+  submitButton.innerText = "File uploaded. Please refresh the page to upload another file.";
+
+  var submitButton = document.querySelector('.dropdown-menu form button[type="submit"]');
+  submitButton.disabled = true;
+  submitButton.innerText = "File uploaded. Please refresh the page to upload another file.";
+
+  
+  // AJAX request to get the test file from the server
+  fetch('df_for_web.csv') // adjust the path accordingly
+  .then(response => response.text())
+  .then(data => {
+      // Parse the CSV data
+      var parsedData = d3.csvParse(data);
+      var headers = data.split('\n')[0];
+      var conditionNames = extractConditions(headers);
+      var controlName = conditionNames[0];
+      var treatmentName = conditionNames[1];
+
+      return processFile(parsedData, controlName, treatmentName);
+  })
+  .then(() => {
+      // Hide loading spinner after processing the file
+      document.getElementById('loadingSpinner').style.display = 'none';
+  })
+  .catch(error => {
+      console.error("Error fetching the test file:", error);
+      document.getElementById('loadingSpinner').style.display = 'none';
+  });
+});
+

@@ -89,9 +89,11 @@ function createTable(data, controlName, treatmentName) {
         return defs;
         });
 
+
         var dataTable = $('#table_id').DataTable(
 
             {
+              
                 "dom": 'lfrtipB',
                 "buttons": [{ extend: 'csv', text: 'Download table as csv' }],
                 "search": {"regex": true},
