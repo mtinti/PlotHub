@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Guide: Differential Expression Analysis Visualization Tool</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Additional styles can be added here */
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+<div class="card mb-4">
+    <div class="card-header">
+        <h1 class="mb-4">User Guide: Differential Expression Analysis Visualization Tool</h1>
+    </div>
+    
+    <div class="card-body">
+        <p>Welcome to our advanced differential expression analysis visualization platform. This user-friendly web application is meticulously designed to provide a comprehensive view of your differential expression analysis data through a range of visual representations.</p>
+    </div>
+
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Features</h2>
+    </div>
+    <div class="card-body">
+        <ol>
+            <li><strong>Volcano Plot</strong>: Offers a visual perspective of log2 fold change against p-value/FDR, enabling the identification of significant gene changes.</li>
+            <li><strong>MA Plot</strong>: Displays the relationship between average intensity and fold change, facilitating insights into data variance.</li>
+            <li><strong>Bar Plot</strong>: Illustrates the intensity values across all conditions, providing an aggregate view.</li>
+            <li><strong>Results Table</strong>: An interactive table to conveniently browse and review the results.</li>
+        </ol>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Supported Experiments</h2>
+    </div>
+    <div class="card-body">
+        <p>Currently, our platform supports visualization for experiments comparing two conditions.</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>File Format &amp; Structure</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Accepted File Type</strong>: Comma Separated Values (.csv)</p>
+        <h3>Mandatory Columns:</h3>
+        <ul>
+            <li><strong>Gene_acc</strong>: A unique integer identifier for each gene. (Note: This won't be displayed in the results table.)</li>
+            <li><strong>Gene_id</strong>: Alphanumeric string indicating the gene or protein ID or their respective group for visualization.</li>
+            <li><strong>logFC</strong>: A decimal value indicating the log2 fold change between the two conditions being compared.</li>
+            <li><strong>log_AveExpr</strong>: A decimal value representing the log10 average intensity of the conditions.</li>
+            <li><strong>FDR</strong>: Decimal value detailing the false discovery rate.</li>
+            <li><strong>Desc</strong>: Descriptive text for the gene or protein groups.</li>
+        </ul>
+
+        <p>Following the 'Desc' column, the intensity values for the two conditions should be presented.</p>
+
+        <h3>Intensity Column Structure:</h3>
+        <p>The intensity column header should adopt the format: <code>{condition}_{replica}</code>.</p>
+        <ul>
+            <li><strong>{condition}</strong>: A concise label for the conditions being compared.</li>
+            <li><strong>{replica}</strong>: An integer indicating the replicate number.</li>
+        </ul>
+        <p>Users can include any number of replicates. It's imperative that the <code>{condition}</code> label remains consistent across replicates. For instance: <code>A_1</code>, <code>A_2</code>, <code>A_3</code>, <code>B_1</code>, <code>B_2</code>, <code>B_3</code> are appropriate headers for two conditions (<code>A</code> and <code>B</code>) with three replicates each (<code>1</code>, <code>2</code>, <code>3</code>). The platform extracts the condition names for display in the bar plot.</p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Final Note</h2>
+    </div>
+    <div class="card-body">
+        <p>Ensure your file adheres to the format specified above for optimal results. We strive to offer a seamless and informative experience. Should you have further inquiries, please reach out to our support team.</p>
+        <p>Thank you for choosing our Differential Expression Analysis Visualization Tool. We wish you insightful discoveries!</p>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

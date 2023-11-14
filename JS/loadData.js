@@ -15,7 +15,7 @@
     //here we capture the circle ids at the end of brush
     //to draw the datatable
     //this logic is too complicated to implement outside the brush, so
-    //using callback
+    //using callback to pass to the scatterplot
     function onBrushEnd(data) {
       completedTable.columns(1).search(data.join('|'), true, false).draw();
     }
@@ -86,7 +86,7 @@
   } 
 
 
-  
+//if file is submitted
   document.querySelector('.dropdown-menu form').addEventListener('submit', function(evt) {
     evt.preventDefault();
 
@@ -132,7 +132,7 @@
 });
 
 
-
+//if example file is submitted
 document.getElementById('uploadTestFile').addEventListener('click', function() {
   // Show loading spinner
   document.getElementById('loadingSpinner').style.display = 'block';
