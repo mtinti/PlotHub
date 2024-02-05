@@ -96,15 +96,34 @@ function createBarPlot(svgID, data, controlName, treatmentName) {
         .style("font-size", "16px")
         .style("fill", "black");
 
+
+    // Sample function to decide format based on data range or type
+    function customTickFormat(range) {
+        const [min, max] = range;
+    
+        // Example condition for log scale with negative values
+        if (max <= 100) {
+        // More precision for smaller ranges, e.g., log scale data
+        return d3.format(".2f"); // Fixed point notation
+        } else {
+        // SI-prefix for larger ranges, suitable for raw values in the range 0 to millions
+        return d3.format(".1s");
+        }
+    }
+
+
+
     // Update function
     function update(data) {
 
         //console.log('data in update bar', data);
-        x.domain([0, d3.max(data, d => d.value)]);
+        x.domain([d3.min(data, d => d.value), d3.max(data, d => d.value)]);
         y.domain(data.map(d => d.name));
         color.domain(data.map(d => d.name.startsWith(controlName) ? controlName : treatmentName));  // Define the domain for the color scale
 
-        xAxis.transition().duration(500).call(d3.axisBottom(x).tickFormat(d3.format(".1s")));
+        const range = x.domain();
+
+        xAxis.transition().duration(500).call(d3.axisBottom(x).tickFormat( customTickFormat(range) ));
         yAxis.transition().duration(500).call(d3.axisLeft(y));
 
         // Update the bars

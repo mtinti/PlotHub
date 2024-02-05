@@ -39,14 +39,44 @@ function buildTable(data, controlName, treatmentName) {
 
   return table;
 }
+    // Sample function to decide format based on data range or type
+function customTickFormat(range) {
+      const [min, max] = range;
+  
+      // Example condition for log scale with negative values
+      if (max <= 100) {
+      // More precision for smaller ranges, e.g., log scale data
+      return d3.format(".2f"); // Fixed point notation
+      } else {
+      // SI-prefix for larger ranges, suitable for raw values in the range 0 to millions
+      return d3.format(".1s");
+      }
+  }
+
 
 function createTable(data, controlName, treatmentName) {
+
     return new Promise((resolve) => {
         // make the table
         buildTable(data, controlName, treatmentName)
 
+
+
         var columns = Object.keys(data[0]);
         //console.log('columns in createTable', columns);
+
+
+        const columnRanges = {};
+        columns.forEach(column => {
+          if (column.startsWith(controlName) || column.startsWith(treatmentName)) {
+            const values = data.map(row => +row[column]).filter(value => !isNaN(value));
+            columnRanges[column] = [Math.min(...values), Math.max(...values)];
+          }
+        });
+        //console.log('columnRanges',columnRanges);
+
+
+
 
         var formatter = d3.format(".1s");
 
@@ -54,6 +84,7 @@ function createTable(data, controlName, treatmentName) {
           let defs = {
             "targets": index,
             "searchable": false,
+            "orderable": true,
             render: function(data, type, raw) {
               // Check if the current column is 'Gene_id'
               if (column === 'Gene_id') {
@@ -80,10 +111,14 @@ function createTable(data, controlName, treatmentName) {
 
               // Apply formatter only to columns starting with controlName or treatmentName
               if (column.startsWith(controlName) || column.startsWith(treatmentName)) {
+                
                 if (isNaN(data)) {
                   return data;
                 } else {
-                  return formatter(+data);  // Apply the d3 formatter
+                  const range = columnRanges[column];
+                  const format = customTickFormat(range);
+                  //console.log('data formatter',data)
+                  return format(+data);  // Apply the d3 formatter
                 }
               } else {
                 return numberParser(data);
@@ -98,6 +133,10 @@ function createTable(data, controlName, treatmentName) {
           if (column === 'Gene_acc') {
             defs.visible = false;
           }
+
+          if (column.startsWith(controlName) || column.startsWith(treatmentName)) {
+            defs.orderable = false;
+          };
         
           return defs;
         });
