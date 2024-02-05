@@ -117,7 +117,15 @@ function createBarPlot(svgID, data, controlName, treatmentName) {
     function update(data) {
 
         //console.log('data in update bar', data);
-        x.domain([d3.min(data, d => d.value), d3.max(data, d => d.value)]);
+        // Compute the minimum value in the data
+        const minValue = d3.min(data, d => d.value);
+        // Calculate the lower bound as minValue - 20% of minValue
+        const lowerBound = minValue - Math.abs(minValue * 0.2);
+
+
+
+       // x.domain([minValue < 0 ? minValue : 0, d3.max(data, d => d.value)]);
+        x.domain([lowerBound, d3.max(data, d => d.value)]);
         y.domain(data.map(d => d.name));
         color.domain(data.map(d => d.name.startsWith(controlName) ? controlName : treatmentName));  // Define the domain for the color scale
 
