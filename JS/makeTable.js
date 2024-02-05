@@ -54,40 +54,54 @@ function createTable(data, controlName, treatmentName) {
           let defs = {
             "targets": index,
             "searchable": false,
-            render: function(data, type, raw) { 
-              
-  
-                // Apply formatter only to columns starting with controlName or treatmentName
-                if (column.startsWith(controlName) || column.startsWith(treatmentName)) {
-                  if (isNaN(data)) {
-                    return data;
-                  } else {
-                    return formatter(+data);  // apply the d3 formatter
-                  }
-                } else {
-                  return numberParser(data);
+            render: function(data, type, raw) {
+              // Check if the current column is 'Gene_id'
+              if (column === 'Gene_id') {
+                // Set the maximum length for the text
+                const maxLength = 15;  // Adjust maxLength as needed
+                // Check if the data exceeds the maximum length
+                if (data.length > maxLength) {
+                  // Return a span with the full data in the title attribute for the tooltip
+                  // and the truncated data for display
+                  return `<span title="${data}">${data.substr(0, maxLength)}...</span>`;
                 }
+              }
 
-            
+              if (column === 'Desc') {
+                // Set the maximum length for the text
+                const maxLength = 25;  // Adjust maxLength as needed
+                // Check if the data exceeds the maximum length
+                if (data.length > maxLength) {
+                  // Return a span with the full data in the title attribute for the tooltip
+                  // and the truncated data for display
+                  return `<span title="${data}">${data.substr(0, maxLength)}...</span>`;
+                }
+              }       
+
+              // Apply formatter only to columns starting with controlName or treatmentName
+              if (column.startsWith(controlName) || column.startsWith(treatmentName)) {
+                if (isNaN(data)) {
+                  return data;
+                } else {
+                  return formatter(+data);  // Apply the d3 formatter
+                }
+              } else {
+                return numberParser(data);
+              }
             }
-          
-          
-          
           };
-
-
-
-          
+        
           if (['Gene_acc', 'Gene_id', 'Desc'].includes(column)) {
             defs.searchable = true;
           }
-          
+        
           if (column === 'Gene_acc') {
             defs.visible = false;
           }
-          
-        return defs;
+        
+          return defs;
         });
+        
 
 
         var dataTable = $('#table_id').DataTable(
