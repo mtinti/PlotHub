@@ -89,7 +89,7 @@ function createTable(data, controlName, treatmentName) {
               // Check if the current column is 'Gene_id'
               if (column === 'Gene_id') {
                 // Set the maximum length for the text
-                const maxLength = 15;  // Adjust maxLength as needed
+                const maxLength = 25;  // Adjust maxLength as needed
                 // Check if the data exceeds the maximum length
                 if (data.length > maxLength) {
                   // Return a span with the full data in the title attribute for the tooltip
@@ -100,7 +100,7 @@ function createTable(data, controlName, treatmentName) {
 
               if (column === 'Desc') {
                 // Set the maximum length for the text
-                const maxLength = 25;  // Adjust maxLength as needed
+                const maxLength = 35;  // Adjust maxLength as needed
                 // Check if the data exceeds the maximum length
                 if (data.length > maxLength) {
                   // Return a span with the full data in the title attribute for the tooltip
