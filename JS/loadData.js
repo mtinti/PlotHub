@@ -147,7 +147,7 @@ document.getElementById('uploadTestFile').addEventListener('click', function() {
 
   
   // AJAX request to get the test file from the server
-  fetch('df_for_web.csv') // adjust the path accordingly
+  fetch('for_web_limma_S12-S12T.csv') // adjust the path accordingly
   .then(response => response.text())
   .then(data => {
       // Parse the CSV data

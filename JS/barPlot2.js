@@ -127,8 +127,6 @@ function createBarPlot(svgID, data, controlName, treatmentName) {
        // x.domain([minValue < 0 ? minValue : 0, d3.max(data, d => d.value)]);
         x.domain([lowerBound, d3.max(data, d => d.value)]);
         y.domain(data.map(d => d.name));
-        color.domain(data.map(d => d.name.startsWith(controlName) ? controlName : treatmentName));  // Define the domain for the color scale
-
         const range = x.domain();
 
         xAxis.transition().duration(500).call(d3.axisBottom(x).tickFormat( customTickFormat(range) ));
@@ -137,16 +135,16 @@ function createBarPlot(svgID, data, controlName, treatmentName) {
         // Update the bars
         var bars = svg.selectAll("rect")
             .data(data, d => d.name);
-        
+
         bars.enter()
             .append("rect")
             .attr("y", d => y(d.name))
             .attr("height", y.bandwidth())
-            .attr("class", d => d.name.startsWith(controlName) ? controlName : treatmentName) // add this line
             .merge(bars)  // Merging the new nodes with the existing ones
+            .attr("class", d => d.condition)
             .transition().duration(1000)
                 .attr("width", d => x(d.value))
-                .attr("fill", d => color(d.name.startsWith(controlName ) ? controlName : treatmentName));  // Use the color scale to set the fill color
+                .attr("fill", d => color(d.condition));
 
         bars.exit().remove();
     }

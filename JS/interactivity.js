@@ -2,8 +2,10 @@
 function processRowDataForBarChart(rowData, columnNames, controlName, treatmentName) {
   var result = [];
   for (var i = 0; i < columnNames.length; i++) {
-    if (columnNames[i].startsWith(controlName) || columnNames[i].startsWith(treatmentName)) {
-      result.push({name: columnNames[i], value: +rowData[i]});
+    var columnCondition = getConditionFromColumn(columnNames[i]);
+
+    if (columnCondition === controlName || columnCondition === treatmentName) {
+      result.push({name: columnNames[i], value: +rowData[i], condition: columnCondition});
     }
   }
   return result;
