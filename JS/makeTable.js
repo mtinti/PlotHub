@@ -2,6 +2,16 @@ function numberParser(value) {
   return (+value) ? parseFloat(value).toFixed(2) : value;
 }
 
+function getConditionFromColumn(columnName) {
+  if (!columnName) {
+    return '';
+  }
+
+  var normalizedName = columnName.toString().trim();
+  var parts = normalizedName.split('_');
+  return parts.length ? parts[0] : normalizedName;
+}
+
 function buildTable(data, controlName, treatmentName) {
 
 
@@ -68,7 +78,8 @@ function createTable(data, controlName, treatmentName) {
 
         const columnRanges = {};
         columns.forEach(column => {
-          if (column.startsWith(controlName) || column.startsWith(treatmentName)) {
+          var columnCondition = getConditionFromColumn(column);
+          if (columnCondition === controlName || columnCondition === treatmentName) {
             const values = data.map(row => +row[column]).filter(value => !isNaN(value));
             columnRanges[column] = [Math.min(...values), Math.max(...values)];
           }
@@ -81,6 +92,8 @@ function createTable(data, controlName, treatmentName) {
         var formatter = d3.format(".1s");
 
         let columnDefs = columns.map((column, index) => {
+          var columnCondition = getConditionFromColumn(column);
+
           let defs = {
             "targets": index,
             "searchable": false,
@@ -110,8 +123,8 @@ function createTable(data, controlName, treatmentName) {
               }       
 
               // Apply formatter only to columns starting with controlName or treatmentName
-              if (column.startsWith(controlName) || column.startsWith(treatmentName)) {
-                
+              if (columnCondition === controlName || columnCondition === treatmentName) {
+
                 if (isNaN(data)) {
                   return data;
                 } else {
@@ -134,7 +147,7 @@ function createTable(data, controlName, treatmentName) {
             defs.visible = false;
           }
 
-          if (column.startsWith(controlName) || column.startsWith(treatmentName)) {
+          if (columnCondition === controlName || columnCondition === treatmentName) {
             defs.orderable = false;
           };
         
