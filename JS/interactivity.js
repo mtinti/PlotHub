@@ -183,18 +183,27 @@ function addHilight(table, scatterPlot1, scatterPlot2, updateBarPlot, controlNam
   document.getElementById('myForm').addEventListener('reset', function(e) {
 
     scatterPlot1.selectAll('circle')
-        
+
         .attr('fill', 'steelblue')
         .attr('r', 4).raise();
 
     scatterPlot2.selectAll('circle')
-        
+
         .attr('fill', 'steelblue')
         .attr('r', 4).raise();
 
-    table.search('').columns().search('').draw(); 
-        
+    table.search('').columns().search('').draw();
+
   });
+
+
+  const navbarHighlightResetButton = document.getElementById('navbar-highlight-reset');
+  if (navbarHighlightResetButton) {
+    navbarHighlightResetButton.disabled = false;
+    navbarHighlightResetButton.onclick = function() {
+      document.getElementById('myForm').reset();
+    };
+  }
 
 
   document.getElementById('search-visible').addEventListener('click', function(e) {
