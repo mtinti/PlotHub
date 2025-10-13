@@ -9,6 +9,7 @@
 
     <link href="https://cdn.datatables.net/v/dt/dt-1.13.5/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/cr-1.7.0/datatables.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://unpkg.com/huebee@2/dist/huebee.min.css">
+    <link rel="stylesheet" href="CSS/custom.css">
     <title>Data Visualisation App</title>
 </head>
 <body>
@@ -99,11 +100,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card mb-4" id='card-table'>
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0" >Data Table</h5>
-                        <button id="search-visible" class="btn btn-primary">Highlight Rows</button>
-                        <input id="colorpicker_value_table" type="text" class="color-input" value="orange" />
-                        <button id="reset-button" class="btn btn-primary">Reset Table</button>
+                    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <h5 class="mb-0 me-3 flex-grow-1 text-start">Data Table</h5>
+                        <div class="table-header-controls d-flex align-items-center gap-2 flex-nowrap">
+                            <button id="search-visible" class="btn btn-primary btn-sm">Highlight Rows</button>
+                            <input id="colorpicker_value_table" type="text" class="color-input form-control form-control-sm" value="orange" />
+                            <button id="reset-button" class="btn btn-primary btn-sm">Reset Table</button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
