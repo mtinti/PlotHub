@@ -52,9 +52,9 @@
     console.log('addInteractivity done');
   }
   
-  function extractConditions(header) {
-    // Split the header into an array of column names
-    var columnNames = header.split(',');
+  function extractConditions(columnNames) {
+    // columnNames comes from d3.csvParse (data.columns), so quotes
+    // and \r line endings are already stripped
 
     // Initialize an empty array to hold condition names
     var conditionNames = [];
@@ -116,8 +116,7 @@
     reader.onload = (function(file) {
         return function(e) {
             var data = d3.csvParse(this.result);
-            var headers = this.result.split('\n')[0];
-            var conditionNames = extractConditions(headers);
+            var conditionNames = extractConditions(data.columns);
             var controlName = conditionNames[0];
             var treatmentName = conditionNames[1];
 
@@ -152,8 +151,7 @@ document.getElementById('uploadTestFile').addEventListener('click', function() {
   .then(data => {
       // Parse the CSV data
       var parsedData = d3.csvParse(data);
-      var headers = data.split('\n')[0];
-      var conditionNames = extractConditions(headers);
+      var conditionNames = extractConditions(parsedData.columns);
       var controlName = conditionNames[0];
       var treatmentName = conditionNames[1];
 

@@ -3,7 +3,8 @@ function createBarPlot(svgID, data, controlName, treatmentName) {
     // Set the dimensions and margins of the graph
     var margin = {top: 30, right: 30, bottom: 30, left: 100},
         width = 460 - margin.left - margin.right,
-        height = 200 - margin.top - margin.bottom;
+        // Grow with the number of samples so bars and labels don't overlap
+        height = Math.max(200 - margin.top - margin.bottom, data.length * 18);
 
     // Append the svg object to the specified div
     var svg = d3.select(svgID)
